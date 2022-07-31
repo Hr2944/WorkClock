@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.hrb.holidays.commons.entities.holidays.HolidayPeriod
+import com.hrb.holidays.business.entities.holidays.HolidayPeriod
 
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi

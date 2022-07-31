@@ -4,8 +4,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.hrb.holidays.commons.controllers.office.IOfficeWeekController
-import com.hrb.holidays.commons.entities.office.OfficeDay
+import com.hrb.holidays.business.controllers.office.IOfficeWeekController
+import com.hrb.holidays.business.entities.office.OfficeDay
 import java.time.DayOfWeek
 import java.time.LocalTime
 

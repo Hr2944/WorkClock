@@ -3,8 +3,8 @@ package com.hrb.holidays.app.databases.office
 import android.content.Context
 import androidx.datastore.core.DataStore
 import com.hrb.holidays.app.databases.proto.*
-import com.hrb.holidays.commons.entities.office.OfficeDay
-import com.hrb.holidays.commons.entities.office.OfficeWeek
+import com.hrb.holidays.business.entities.office.OfficeDay
+import com.hrb.holidays.business.entities.office.OfficeWeek
 import java.time.DayOfWeek
 import java.time.LocalTime
 

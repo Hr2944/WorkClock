@@ -3,7 +3,7 @@ package com.hrb.holidays.ui.views.office
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.hrb.holidays.commons.entities.office.OfficeDay
+import com.hrb.holidays.business.entities.office.OfficeDay
 import com.hrb.holidays.ui.modifiers.frame
 import java.time.DayOfWeek
 import java.time.LocalTime

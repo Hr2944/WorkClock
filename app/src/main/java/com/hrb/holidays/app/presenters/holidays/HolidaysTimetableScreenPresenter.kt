@@ -4,8 +4,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.hrb.holidays.commons.controllers.holidays.IHolidaysTimetableController
-import com.hrb.holidays.commons.entities.holidays.HolidayPeriod
+import com.hrb.holidays.business.controllers.holidays.IHolidaysTimetableController
+import com.hrb.holidays.business.entities.holidays.HolidayPeriod
 
 class HolidaysTimetableScreenPresenter(
     private val controller: IHolidaysTimetableController

@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import com.hrb.holidays.app.presenters.holidays.HolidaysTimetableScreenPresenter
-import com.hrb.holidays.commons.entities.holidays.HolidayPeriod
+import com.hrb.holidays.business.entities.holidays.HolidayPeriod
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 

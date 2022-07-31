@@ -37,10 +37,12 @@ fun Modifier.frame(
     vararg drawLines: FrameLine,
     color: Color = MaterialTheme.colors.onSurface,
     alpha: Float = .5f
-) = this.drawBehind {
-    drawFrameLines(
-        lines = drawLines,
-        color = color,
-        alpha = alpha
-    )
-}
+): Modifier = this.then(
+    drawBehind {
+        drawFrameLines(
+            lines = drawLines,
+            color = color,
+            alpha = alpha
+        )
+    }
+)

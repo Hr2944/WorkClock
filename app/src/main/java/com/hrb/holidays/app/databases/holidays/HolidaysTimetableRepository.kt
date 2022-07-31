@@ -3,8 +3,8 @@ package com.hrb.holidays.app.databases.holidays
 import android.content.Context
 import androidx.datastore.core.DataStore
 import com.hrb.holidays.app.databases.proto.*
-import com.hrb.holidays.commons.entities.holidays.HolidayPeriod
-import com.hrb.holidays.commons.entities.holidays.HolidaysTimetable
+import com.hrb.holidays.business.entities.holidays.HolidayPeriod
+import com.hrb.holidays.business.entities.holidays.HolidaysTimetable
 import java.time.LocalDate
 
 class HolidaysTimetableRepository(

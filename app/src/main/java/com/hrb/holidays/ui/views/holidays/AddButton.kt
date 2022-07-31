@@ -7,7 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.hrb.holidays.commons.entities.holidays.HolidayPeriod
+import com.hrb.holidays.business.entities.holidays.HolidayPeriod
 
 @Composable
 fun AddHolidayButton(onAddHoliday: (HolidayPeriod) -> Unit) {

@@ -11,7 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.hrb.holidays.app.entities.settings.Theme
 import com.hrb.holidays.app.presenters.settings.SettingsScreenPresenter
-import com.hrb.holidays.ui.buttons.TextButtonGroup
+import com.hrb.holidays.ui.components.buttons.TextButtonGroup
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 

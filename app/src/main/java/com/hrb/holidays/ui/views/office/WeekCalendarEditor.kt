@@ -3,7 +3,7 @@ package com.hrb.holidays.ui.views.office
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import com.hrb.holidays.app.presenters.office.OfficeWeekScreenPresenter
-import com.hrb.holidays.commons.entities.office.OfficeDay
+import com.hrb.holidays.business.entities.office.OfficeDay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 import java.time.DayOfWeek
