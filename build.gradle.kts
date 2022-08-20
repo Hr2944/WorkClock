@@ -1,21 +1,20 @@
 buildscript {
-    extra.apply {
-        set("compose_version", "1.2.0")
-        set("koin_version", "3.2.0")
-        set("mockk_version", "1.12.4")
-        set("material_dialogs_version", "0.7.2")
-        set("google_protobuf_version", "3.21.2")
-        set("core_ktx_version", "1.8.0")
-        set("lifecycle_runtime_ktx_version", "2.5.0")
-        set("activity_compose_version", "1.5.1")
-        set("datastore_version", "1.0.0")
-    }
+    val composeVersion by extra("1.2.1")
+    val kotlinCompilerExtensionVersionVersion by extra("1.3.0")
+    val koinVersion by extra("3.2.0")
+    val mockkVersion by extra("1.12.5")
+    val materialDialogsVersion by extra("0.7.2")
+    val googleProtobufVersion by extra("3.21.5")
+    val coreKtxVersion by extra("1.8.0")
+    val lifecycleRuntimeKtxVersion by extra("2.5.1")
+    val activityComposeVersion by extra("1.5.1")
+    val datastoreVersion by extra("1.0.0")
 }
 
 plugins {
-    id("com.android.application") version "7.2.1" apply false
-    id("com.android.library") version "7.2.1" apply false
-    id("org.jetbrains.kotlin.android") version "1.7.0" apply false
+    id("com.android.application") version "7.2.2" apply false
+    id("com.android.library") version "7.2.2" apply false
+    id("org.jetbrains.kotlin.android") version "1.7.10" apply false
 }
 
 tasks.register("clean", Delete::class) {
