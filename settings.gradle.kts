@@ -13,3 +13,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Holidays"
 include(":app")
+include(":benchmark")

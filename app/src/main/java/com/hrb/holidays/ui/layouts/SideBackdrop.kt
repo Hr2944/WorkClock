@@ -26,6 +26,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.hrb.holidays.ui.layouts.SideBackdropDefaults.gesturesEnabled
+import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -146,7 +148,8 @@ object SideBackdropDefaults {
 
     const val revealThresholdWidthFraction: Float = 3f / 5f
 
-    val directions: Set<RevealDirection> = setOf(RevealDirection.Left, RevealDirection.Right)
+    val directions: ImmutableSet<RevealDirection> =
+        persistentSetOf(RevealDirection.Left, RevealDirection.Right)
 }
 
 @ExperimentalMaterialApi
@@ -159,7 +162,7 @@ fun SideBackdrop(
     frontLayerScrimColor: Color = SideBackdropDefaults.frontLayerScrimColor,
     backLayerScrimColor: Color = SideBackdropDefaults.backLayerScrimColor,
     frontLayerElevation: Dp = SideBackdropDefaults.frontLayerElevation,
-    directions: Set<RevealDirection> = SideBackdropDefaults.directions,
+    directions: ImmutableSet<RevealDirection> = SideBackdropDefaults.directions,
     frontLayerCornerSize: Dp = SideBackdropDefaults.frontLayerCornerSize,
     revealThresholdWidthFraction: Float = SideBackdropDefaults.revealThresholdWidthFraction
 ) {
@@ -249,9 +252,9 @@ private fun BoxScope.BackLayer(
 
 @ExperimentalMaterialApi
 @Composable
-private fun BoxScope.FrontLayer(
+private fun FrontLayer(
     scaffoldState: SideBackdropState,
-    directions: Set<RevealDirection>,
+    directions: ImmutableSet<RevealDirection>,
     frontLayerContent: @Composable () -> Unit,
     frontLayerScrimColor: Color,
     frontLayerElevation: Dp,

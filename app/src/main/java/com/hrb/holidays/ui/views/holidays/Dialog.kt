@@ -2,17 +2,21 @@ package com.hrb.holidays.ui.views.holidays
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.EditCalendar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.hrb.holidays.business.entities.holidays.HolidayPeriod
-import com.vanpra.composematerialdialogs.MaterialDialog
-import com.vanpra.composematerialdialogs.datetime.date.datepicker
-import com.vanpra.composematerialdialogs.rememberMaterialDialogState
-import java.time.LocalDate
+import com.hrb.holidays.ui.components.datepicker.RangePickerDialog
+import com.hrb.holidays.ui.components.datepicker.rememberRangePickerState
 
 
 @Composable
@@ -50,119 +54,90 @@ fun DeleteHolidayDialog(
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AddHolidayDialog(
     isOpen: Boolean,
     onAdd: (HolidayPeriod) -> Unit = { _ -> },
-    onCancel: () -> Unit = {},
-    onComplete: () -> Unit = {}
+    onDismissRequest: () -> Unit
 ) {
     if (isOpen) {
-        Dialog(onDismissRequest = { onCancel(); onComplete() }) {
+        Dialog(onDismissRequest = onDismissRequest) {
             Surface(
                 shape = MaterialTheme.shapes.medium,
                 color = MaterialTheme.colors.surface,
                 contentColor = contentColorFor(SnackbarDefaults.backgroundColor)
             ) {
-                var name by remember { mutableStateOf("New Holiday") }
-                var fromDate by remember { mutableStateOf(LocalDate.now()) }
-                var toDate by remember { mutableStateOf(LocalDate.now()) }
-
-                var errorMsg by remember { mutableStateOf("") }
-
-                val fromDatePickerState = rememberMaterialDialogState()
-                val toDatePickerState = rememberMaterialDialogState()
-
-                MaterialDialog(dialogState = fromDatePickerState,
-                    buttons = {
-                        positiveButton("OK")
-                    }
-                ) {
-                    datepicker(
-                        initialDate = fromDate,
-                        title = "Select start date",
-                    ) { date ->
-                        fromDate = date
-                        toDatePickerState.show()
-                    }
-                }
-                MaterialDialog(dialogState = toDatePickerState,
-                    buttons = {
-                        positiveButton("OK")
-                    }
-                ) {
-                    datepicker(
-                        initialDate = toDate,
-                        title = "Select end date",
-                        allowedDateValidator = { date ->
-                            date.isAfter(fromDate)
-                        }
-                    ) { date ->
-                        toDate = date
-                    }
-                }
+                var name by rememberSaveable { mutableStateOf("New Holiday") }
+                val pickerState = rememberRangePickerState()
+                var showDialog by rememberSaveable { mutableStateOf(true) }
 
                 Column(modifier = Modifier.padding(16.dp)) {
                     OutlinedTextField(
                         value = name,
                         onValueChange = { name = it },
                         singleLine = true,
-                        placeholder = { Text("Type holiday name") }
+                        placeholder = { Text("Name...") }
                     )
-
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("From:")
-                        Spacer(modifier = Modifier.width(8.dp))
-                        OutlinedButton(onClick = { fromDatePickerState.show() }) {
-                            Text(fromDate.toString())
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        OutlinedButton(onClick = { showDialog = true }) {
+                            Icon(
+                                Icons.Filled.EditCalendar,
+                                contentDescription = "Favorite",
+                                modifier = Modifier.size(ButtonDefaults.IconSize)
+                            )
+                            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                            Text("${pickerState.startAsString()} – ${pickerState.endAsString()}")
                         }
                     }
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("To:")
-                        Spacer(modifier = Modifier.width(8.dp))
-                        OutlinedButton(onClick = { toDatePickerState.show() }) {
-                            Text(toDate.toString())
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(1.dp))
-                    Text(
-                        errorMsg,
-                        style = MaterialTheme.typography.caption,
-                        color = Color.Red
-                    )
-
                     Spacer(modifier = Modifier.height(16.dp))
+
                     Row(
                         horizontalArrangement = Arrangement.End,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        OutlinedButton(onClick = { onCancel(); onComplete() }) {
+                        OutlinedButton(onClick = onDismissRequest) {
                             Text("CANCEL")
                         }
                         Spacer(modifier = Modifier.width(8.dp))
                         Button(
                             onClick = {
-                                if (toDate.isAfter(fromDate)) {
+                                val startDate = pickerState.startDate
+                                val endDate = pickerState.endDate
+                                if (startDate != null && endDate != null) {
                                     onAdd(
                                         HolidayPeriod(
-                                            name,
-                                            fromDate,
-                                            toDate
+                                            name = name,
+                                            fromDate = startDate.toLocalDate(),
+                                            toDate = endDate.toLocalDate()
                                         )
                                     )
-                                    onComplete()
-                                } else {
-                                    errorMsg = "End date must be after start date"
+                                    onDismissRequest()
                                 }
                             },
-                            elevation = ButtonDefaults.elevation(0.dp, 0.dp, 0.dp, 0.dp)
+                            elevation = ButtonDefaults.elevation(0.dp, 0.dp, 0.dp, 0.dp),
+                            enabled = pickerState.isValidRange
                         ) {
                             Text("ADD")
                         }
                     }
+                }
+
+                if (showDialog) {
+                    RangePickerDialog(
+                        onDismissRequest = {
+                            showDialog = false
+                        },
+                        onSave = { _, _ ->
+                            showDialog = false
+                        },
+                        pickerState = pickerState
+                    )
                 }
             }
         }

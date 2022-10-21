@@ -14,6 +14,8 @@ import com.hrb.holidays.ui.views.office.WeekCalendarEditorScreenActivity
 import com.hrb.holidays.ui.views.settings.SettingsScreenActivity
 import com.hrb.holidays.ui.views.timer.FloatingPauseButton
 import com.hrb.holidays.ui.views.timer.TimerScreen
+import kotlinx.collections.immutable.immutableSetOf
+import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
@@ -156,7 +158,7 @@ fun BaseLayout(
 ) {
     SideBackdrop(
         scaffoldState = sideBackdropState,
-        directions = setOf(RevealDirection.Left),
+        directions = persistentSetOf(RevealDirection.Left),
         backLayerContent = backLayerContent,
         gesturesEnabled = !holidaysCalendarDrawerState.isOpen && !officeCalendarDrawerState.isOpen,
         frontLayerContent = {

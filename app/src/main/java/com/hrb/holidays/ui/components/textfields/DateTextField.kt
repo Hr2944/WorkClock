@@ -4,14 +4,14 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.core.text.isDigitsOnly
-import com.hrb.holidays.commons.ImmutableLocalDate
-import java.time.LocalDate
+import com.hrb.holidays.commons.immutable.ImmutableLocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
@@ -19,12 +19,13 @@ import java.time.format.DateTimeParseException
 @Composable
 fun DateTextField(
     initialValue: ImmutableLocalDate? = null,
-    onValueChange: (LocalDate?) -> Unit,
+    onValueChange: (ImmutableLocalDate?) -> Unit,
     label: @Composable (() -> Unit)? = null,
     dateTimeFormatterPattern: String = "MM dd yyyy",
     delimiter: Char = '/',
     isError: Boolean = false,
-    onError: () -> Unit
+    onError: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val dateTimeFormatter = remember(dateTimeFormatterPattern) {
         DateTimeFormatter.ofPattern(dateTimeFormatterPattern)
@@ -46,7 +47,7 @@ fun DateTextField(
             if (initialValue == null) {
                 ""
             } else {
-                val date = initialValue().format(dateTimeFormatter)
+                val date = initialValue.format(dateTimeFormatter)
                 val builder = StringBuilder()
                 date.forEach {
                     builder.append(
@@ -60,6 +61,7 @@ fun DateTextField(
     }
 
     TextField(
+        modifier = modifier,
         value = valueText,
         onValueChange = {
             if (it.length <= maxTextSize && it.isDigitsOnly()) {
@@ -69,7 +71,7 @@ fun DateTextField(
                 } else {
                     try {
                         onValueChange(
-                            LocalDate.parse(
+                            ImmutableLocalDate.parse(
                                 it.toDateRepresentation(
                                     sortedPatternSpaceIndexes = sortedPatternSpaceIndexes,
                                     replaceChar = ' '

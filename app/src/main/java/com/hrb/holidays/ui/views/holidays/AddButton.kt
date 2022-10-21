@@ -24,7 +24,7 @@ fun AddHolidayButton(onAddHoliday: (HolidayPeriod) -> Unit) {
 
     AddHolidayDialog(
         isOpen = addDialogIsOpen,
-        onComplete = { addDialogIsOpen = false },
+        onDismissRequest = { addDialogIsOpen = false },
         onAdd = onAddHoliday
     )
 }

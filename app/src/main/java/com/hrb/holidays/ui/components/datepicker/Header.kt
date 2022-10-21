@@ -6,80 +6,62 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
-import com.hrb.holidays.commons.ImmutableDateTimeFormatter
 import com.hrb.holidays.commons.capitalizeFirstChar
-import java.time.format.DateTimeFormatter
+import com.hrb.holidays.commons.immutable.ImmutableLocalDate
 
 @Composable
-internal fun Dates(
+internal fun HeaderDates(
     separator: String,
     style: TextStyle,
-    pickerState: DateRangePickerState
+    pickerState: RangePickerState
 ) {
-    val dateFormatter = remember {
-        ImmutableDateTimeFormatter(DateTimeFormatter.ofPattern("MMM dd"))
-    }
-
-    StartDateText(
-        pickerState = pickerState,
-        dateFormatter = dateFormatter,
+    DateText(
         style = style,
+        dateProvider = { pickerState.startDate },
+        placeholder = "Start",
         separator = separator
     )
-    EndDateText(
-        pickerState = pickerState,
-        dateFormatter = dateFormatter,
+    DateText(
         style = style,
+        dateProvider = { pickerState.endDate },
+        placeholder = "End"
     )
 }
 
 @Composable
-fun StartDateText(
-    pickerState: DateRangePickerState,
-    dateFormatter: ImmutableDateTimeFormatter,
+private fun DateText(
     style: TextStyle,
-    separator: String
+    dateProvider: () -> ImmutableLocalDate?,
+    placeholder: String,
+    separator: String = ""
 ) {
     val alpha =
-        if (pickerState.startDate == null) ContentAlpha.disabled
+        if (dateProvider() == null) ContentAlpha.disabled
         else LocalContentAlpha.current
+    val text = remember(dateProvider(), placeholder, separator) {
+        dateProvider()?.format(DateFormatDefaults.headerFormatter.toDateTimeFormatter())
+            ?.capitalizeFirstChar()
+            ?: placeholder
+    }
 
     Row {
         Text(
-            text = pickerState.startDate?.format(dateFormatter())?.capitalizeFirstChar()
-                ?: "Start",
+            text = text,
             style = style,
-            color = LocalContentColor.current.copy(alpha = alpha),
+            color = LocalContentColor.current.copy(alpha = alpha)
         )
-        Text(
-            text = separator,
-            style = style,
-            color = LocalContentColor.current.copy(alpha = alpha),
-        )
+        if (separator != "") {
+            Text(
+                text = separator,
+                style = style,
+                color = LocalContentColor.current.copy(alpha = alpha)
+            )
+        }
     }
 }
 
 @Composable
-fun EndDateText(
-    pickerState: DateRangePickerState,
-    dateFormatter: ImmutableDateTimeFormatter,
-    style: TextStyle
-) {
-    val alpha =
-        if (pickerState.endDate == null) ContentAlpha.disabled
-        else LocalContentAlpha.current
-
-    Text(
-        text = pickerState.endDate?.format(dateFormatter())?.capitalizeFirstChar()
-            ?: "End",
-        style = style,
-        color = LocalContentColor.current.copy(alpha = alpha),
-    )
-
-}
-
-@Composable
-internal fun ToggleButton(onClick: () -> Unit, icon: ImageVector) {
+internal fun TogglePickerModeButton(onClick: () -> Unit, icon: ImageVector) {
     IconButton(onClick = onClick) {
         Icon(icon, "Toggle between date range input and date range picker")
     }
